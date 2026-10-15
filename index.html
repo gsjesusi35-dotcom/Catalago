@@ -78,6 +78,7 @@ dialog input[type=checkbox]{width:auto;margin-right:8px}
 </style>
 </head>
 <body>
+<div id="boot" style="padding:70px 16px;text-align:center;color:#5d6573;font:16px system-ui,sans-serif">Cargando catálogo… (v3)</div>
 <div class="adm" id="adm" hidden><b>Modo administrador</b>
   <button class="ab" id="b_mode">✏️ Editar catálogo</button><button class="ab" id="b_new" hidden>➕ Producto nuevo</button>
   <button class="ab" id="b_cfg" hidden>⚙️ Mi tienda</button><button class="ab ghost" id="b_out">Salir</button></div>
@@ -94,8 +95,9 @@ dialog input[type=checkbox]{width:auto;margin-right:8px}
 <div class="toast" id="toast" hidden></div>
 
 <script>
-function showErr(t){var m=document.getElementById("msg");if(!m)return;document.getElementById("app").hidden=true;document.getElementById("mt").textContent="Algo salió mal";document.getElementById("mp").textContent=t;m.hidden=false}
-window.addEventListener("error",function(e){showErr((e.message||"Error")+" "+String(e.filename||"").split("/").pop()+":"+(e.lineno||""))});
+function showErr(t){var b=document.getElementById("boot");if(b)b.remove();var m=document.getElementById("msg");if(!m)return;document.getElementById("app").hidden=true;document.getElementById("mt").textContent="Algo salió mal";document.getElementById("mp").textContent=t;m.hidden=false}
+window.addEventListener("error",function(e){if(e.target&&e.target.src){showErr("No se pudo descargar: "+e.target.src);return}showErr((e.message||"Error")+" "+String(e.filename||"").split("/").pop()+":"+(e.lineno||""))});
+setTimeout(function(){var b=document.getElementById("boot");if(b){showErr("La página no pudo iniciar. Puede que tu red esté bloqueando los servicios de Google/Firebase (v3).")}},12000);
 window.addEventListener("unhandledrejection",function(e){var r=e.reason;showErr(String((r&&(r.code||r.message))||r))});
 </script>
 <script type="module">
@@ -119,7 +121,7 @@ const fmt=n=>(store.currency||"$")+Number(n).toLocaleString("es",{minimumFractio
 const link=m=>`https://wa.me/${store.whatsapp}?text=${encodeURIComponent(m)}`;
 const total=p=>Object.values(p.sizes).reduce((a,b)=>a+b,0);
 function toast(m,ms){const t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>t.hidden=true,ms||2500)}
-function msg(t,p){$("app").hidden=true;$("msg").hidden=false;$("mt").textContent=t;$("mp").textContent=p}
+function msg(t,p){const b=document.getElementById("boot");if(b)b.remove();$("app").hidden=true;$("msg").hidden=false;$("mt").textContent=t;$("mp").textContent=p}
 
 function initS(p){const s=S[p.id]=S[p.id]||{c:0,q:1,sz:null};
   if(!s.sz||!(s.sz in p.sizes))s.sz=Object.keys(p.sizes).find(k=>p.sizes[k]>0)||null;
@@ -176,7 +178,7 @@ async function boot(){
   document.title=store.name;$("sname").textContent=store.name;
   document.documentElement.style.setProperty("--acc",store.color||"#2a45ff");
   $("fab").href=link("¡Hola! Vi el catálogo y tengo una consulta.");$("fab").hidden=false;
-  $("app").hidden=false;$("adm").hidden=!OWNER;$("b_login").hidden=OWNER;
+  const b0=document.getElementById("boot");if(b0)b0.remove();$("app").hidden=false;$("adm").hidden=!OWNER;$("b_login").hidden=OWNER;
   await loadProducts();
 }
 
@@ -208,14 +210,4 @@ $("dbody").addEventListener("input",e=>{
   const t=e.target,i=+t.dataset.i,k=t.dataset.k;if(!ed)return;
   if(ed.mode==="store"){if(t.dataset.s)ed.c[t.dataset.s]=t.value;return}
   if(ed.mode!=="prod")return;const w=ed.w;
-  if(t.id==="f_active")w.active=t.checked;
-  else if(t.id==="f_price")w.price=+t.value;
-  else if(t.id&&t.id.startsWith("f_")&&t.id!=="f_img")w[t.id.slice(2)]=t.value;
-  else if(k==="cn")w.colors[i][0]=t.value;
-  else if(k==="cc"){w.colors[i][1]=t.value;w.colors[i][2]=light(t.value)}
-  else if(k==="sn")w.sz[i][0]=t.value;
-  else if(k==="sq")w.sz[i][1]=Math.max(0,parseInt(t.value)||0);
-});
-$("dbody").addEventListener("click",async e=>{
-  const b=e.target.closest("[data-d]");if(!b||!ed)return;const d=b.dataset.d,i=+b.dataset.i;
-  if(d==="forgot"){const em=$("f_em").value.trim();if(!em)return toast("Escribe
+  if(t.id==="f_active")w.active=t.checked
