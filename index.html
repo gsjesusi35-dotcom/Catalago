@@ -170,8 +170,8 @@ async function boot(){
   if(!slug&&user){const q=await getDocs(query(collection(db,"stores"),where("owner","==",user.uid)));
     if(q.docs[0]){slug=q.docs[0].id;history.replaceState(null,"","?tienda="+slug)}}
   if(!slug)return msg("Falta el enlace de la tienda","Abre el enlace que te dio tu proveedor o entra como administrador.");
-  let snap;try{snap=await getDoc(doc(db,"stores",slug))}catch(e){return msg("No se pudo cargar","Revisa la conexión e inténtalo otra vez.")}
-  if(!snap.exists())return msg("Tienda no encontrada","Revisa que el enlace esté completo.");
+  let snap;try{snap=await getDoc(doc(db,"stores",slug))}catch(e){return msg("No se pudo cargar","Código del error: "+(e.code||e.message))}
+  if(!snap.exists())return msg("Tienda no encontrada","No existe una tienda llamada «"+slug+"» en Firestore. Revisa el ID del documento en la colección stores.");
   store={id:snap.id,...snap.data()};OWNER=!!user&&store.owner===user.uid;
   document.title=store.name;$("sname").textContent=store.name;
   document.documentElement.style.setProperty("--acc",store.color||"#2a45ff");
@@ -218,5 +218,4 @@ $("dbody").addEventListener("input",e=>{
 });
 $("dbody").addEventListener("click",async e=>{
   const b=e.target.closest("[data-d]");if(!b||!ed)return;const d=b.dataset.d,i=+b.dataset.i;
-  if(d==="forgot"){const em=$("f_em").value.trim();if(!em)return toast("Escribe tu correo primero");
-    try{await sendPasswordResetEmail(auth,em)
+  if(d==="forgot"){const em=$("f_em").value.trim();if(!em)return toast("Escribe
