@@ -93,6 +93,11 @@ dialog input[type=checkbox]{width:auto;margin-right:8px}
 <dialog id="dlg"><div id="dbody"></div><div class="dbtn"><button class="ab" id="d_ok">Guardar</button><button class="ab ghost" id="d_x">Cancelar</button><button class="ab danger" id="d_del" hidden>Eliminar</button></div></dialog>
 <div class="toast" id="toast" hidden></div>
 
+<script>
+function showErr(t){var m=document.getElementById("msg");if(!m)return;document.getElementById("app").hidden=true;document.getElementById("mt").textContent="Algo salió mal";document.getElementById("mp").textContent=t;m.hidden=false}
+window.addEventListener("error",function(e){showErr((e.message||"Error")+" "+String(e.filename||"").split("/").pop()+":"+(e.lineno||""))});
+window.addEventListener("unhandledrejection",function(e){var r=e.reason;showErr(String((r&&(r.code||r.message))||r))});
+</script>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut,sendPasswordResetEmail} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -214,42 +219,4 @@ $("dbody").addEventListener("input",e=>{
 $("dbody").addEventListener("click",async e=>{
   const b=e.target.closest("[data-d]");if(!b||!ed)return;const d=b.dataset.d,i=+b.dataset.i;
   if(d==="forgot"){const em=$("f_em").value.trim();if(!em)return toast("Escribe tu correo primero");
-    try{await sendPasswordResetEmail(auth,em);return toast("Te enviamos un correo para cambiar la contraseña",4000)}
-    catch(err){return toast("No se pudo enviar el correo",4000)}}
-  if(ed.mode!=="prod")return;const w=ed.w;
-  if(d==="rmimg")w.image_url="";
-  if(d==="rc"&&w.colors.length>1)w.colors.splice(i,1);
-  if(d==="ac")w.colors.push(["Nuevo","#2a45ff",light("#2a45ff")]);
-  if(d==="rs")w.sz.splice(i,1); if(d==="as")w.sz.push(["",0]);
-  if(d==="pre")w.sz=["S","M","L","XL"].map(k=>[k,0]);
-  form();
-});
-function shrink(f,max,q){return new Promise((ok,no)=>{const im=new Image();im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);ok(c.toDataURL("image/jpeg",q))};im.onerror=no;im.src=URL.createObjectURL(f)})}
-$("dbody").addEventListener("change",async e=>{
-  if(e.target.id!=="f_img"||!e.target.files[0])return;
-  try{toast("Procesando foto…",9000);let u=await shrink(e.target.files[0],800,.72);if(u.length>600000)u=await shrink(e.target.files[0],560,.6);
-    ed.w.image_url=u;form();toast("Foto lista ✔")}catch(err){toast("No se pudo procesar la foto")}
-});
-$("d_x").onclick=()=>$("dlg").close();
-$("d_ok").onclick=async()=>{
-  if(ed.mode==="login"){try{await signInWithEmailAndPassword(auth,$("f_em").value.trim(),$("f_pw").value);return location.reload()}
-    catch(err){return toast("Correo o contraseña incorrectos",3500)}}
-  if(ed.mode==="store"){const c=ed.c,wa=String(c.whatsapp).replace(/\D/g,"");if(!c.name.trim()||!wa)return toast("Revisa el nombre y el WhatsApp");
-    try{await updateDoc(doc(db,"stores",store.id),{name:c.name.trim(),whatsapp:wa,currency:c.currency||"$",color:c.color})}catch(err){return toast("No se pudo guardar",4000)}return location.reload()}
-  const w=ed.w;if(!w.name.trim())return toast("Ponle un nombre al producto");
-  const sizes={};w.sz.forEach(([k,v])=>{k=String(k).trim().replace(/\//g,"-");if(k)sizes[k]=v});
-  if(!Object.keys(sizes).length)return toast("Agrega al menos una talla");
-  const row={name:w.name.trim(),category:(w.category||"").trim()||"Otros",description:w.description||"",price:w.price||0,icon:w.icon||"🏷️",image_url:w.image_url||"",colors:w.colors.map(c=>({n:c[0]||"Color",c1:c[1],c2:c[2]})),sizes,active:w.active,created:w.created||Date.now()};
-  try{if(w.id)await setDoc(doc(db,"stores",store.id,"products",w.id),row);else await addDoc(collection(db,"stores",store.id,"products"),row)}
-  catch(err){return toast("No se pudo guardar: "+(err.code||""),5000)}
-  $("dlg").close();await loadProducts();toast("Guardado ✔");
-};
-$("d_del").onclick=async function(){
-  if(!this.dataset.s){this.dataset.s=1;this.textContent="¿Seguro? Toca otra vez";return}
-  try{await deleteDoc(doc(db,"stores",store.id,"products",ed.w.id))}catch(err){$("dlg").close();return toast("No se pudo eliminar")}
-  $("dlg").close();await loadProducts();toast("Producto eliminado");
-};
-boot();
-</script>
-</body>
-</html>
+    try{await sendPasswordResetEmail(auth,em)
