@@ -12,7 +12,6 @@
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 Barlow,system-ui,sans-serif}
 .wrap{max-width:1100px;margin:auto;padding:0 16px}
 h1{font:italic 800 clamp(40px,10vw,80px)/.92 'Barlow Condensed',Impact,sans-serif;text-transform:uppercase;margin:30px 0 8px}
-h1 span{color:var(--acc)}
 .sub{color:var(--mut);margin:0 0 14px;max-width:46ch}
 .count{display:inline-flex;gap:8px;align-items:baseline;padding:8px 14px;border:2px solid var(--ink);border-radius:999px;font-weight:600}
 .count b{font:italic 800 30px/1 'Barlow Condensed',sans-serif;color:var(--acc)}
@@ -57,7 +56,7 @@ h2{font:italic 800 26px/1 'Barlow Condensed',sans-serif;margin:0;text-transform:
 </head>
 <body>
 <div class="wrap">
-  <h1 id="nombre"></h1>
+  <h1 id="nombre">Catálogo</h1>
   <p class="sub">Elige tu prenda, talla y color. Mira cuántas quedan y haz tu pedido por WhatsApp.</p>
   <div class="count"><b id="total">0</b> prendas disponibles</div>
   <div class="bar"><input id="q" type="search" placeholder="Buscar prendas…"><div class="chips" id="chips"></div></div>
@@ -66,10 +65,13 @@ h2{font:italic 800 26px/1 'Barlow Condensed',sans-serif;margin:0;text-transform:
 <a class="fab" id="fab" target="_blank" rel="noopener">💬 Consultar</a>
 
 <script>
-// ===== EDITA AQUÍ =====
-const WA = "584221420364";   // tu WhatsApp: código de país + número, sin + ni 0
+window.onerror=function(m){var d=document.createElement("div");d.style.cssText="padding:10px;background:#fee;color:#900;font:14px sans-serif";d.textContent="Error: "+m;document.body.insertBefore(d,document.body.firstChild)};
+
+/* ===== EDITA AQUÍ: WA = tu WhatsApp con código de país, sin + ni 0 ===== */
+const WA = "584221420364";
 const MONEDA = "$";
 const NOMBRE = "Mi Catálogo";
+/* Cada producto: nombre, categoría, emoji, foto (url o vacío), precio, descripción, colores y tallas con su cantidad */
 const PRODUCTOS = [
  {n:"Camiseta Aero",cat:"Camisetas",icon:"👕",img:"",precio:19.9,desc:"Tela ligera que respira y seca rápido. Ideal para correr y gym.",
   colores:[["Azul","#2a45ff","#7b8cff"],["Negro","#1b1e26","#4a5060"],["Coral","#ff5a1f","#ffa06b"]],tallas:{XS:3,S:8,M:12,L:6,XL:0}},
@@ -80,8 +82,7 @@ const PRODUCTOS = [
  {n:"Sudadera Pro",cat:"Sudaderas",icon:"🧥",img:"",precio:42,desc:"Felpa suave por dentro, capucha ajustable y bolsillo canguro.",
   colores:[["Gris","#59616f","#aab2c0"],["Azul","#2a45ff","#7b8cff"]],tallas:{S:1,M:3,L:5,XL:2}}
 ];
-// Para poner foto: img:"https://..." o img:"fotos/camiseta.jpg" (si la subes al repositorio)
-// =======================
+/* ===== FIN DE LO QUE SE EDITA ===== */
 
 const $=id=>document.getElementById(id);
 const fmt=n=>MONEDA+n.toLocaleString("es",{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -93,4 +94,40 @@ function card(i){
   const m=`¡Hola! Quiero comprar:\n• ${p.n} (${c[0]})\n• Talla: ${s.t}\n• Cantidad: ${s.q}\n• Total: ${fmt(p.precio*s.q)}\n¿Sigue disponible?`;
   return `<div class="tile" style="background:linear-gradient(135deg,${c[1]},${c[2]})">${p.img?`<img src="${p.img}" alt="${p.n}">`:`<i>${p.icon}</i>`}${!s.t?'<b class="badge out">Agotado</b>':low?`<b class="badge">¡Últimas ${st}!</b>`:''}</div>
   <div class="body">
-    <div class="top"><h2>${p.n}</h
+    <div class="top"><h2>${p.n}</h2><div class="price">${fmt(p.precio)}</div></div>
+    <p class="desc">${p.desc}</p>
+    <div><span class="lbl">Color: ${c[0]}</span><div class="row">${p.colores.map((x,k)=>`<button class="sw ${k===s.c?'on':''}" data-a="c" data-v="${k}" aria-label="${x[0]}" style="background:linear-gradient(135deg,${x[1]},${x[2]})"></button>`).join("")}</div></div>
+    <div><span class="lbl">Talla</span><div class="row">${Object.entries(p.tallas).map(([k,v])=>`<button class="sz ${k===s.t?'on':''}" data-a="t" data-v="${k}" ${v?'':'disabled'}>${k}</button>`).join("")}</div></div>
+    <div class="stock"><span><b>${st}</b> disponibles</span><div class="meter"><u class="${low?'low':''}" style="width:${Math.min(100,st/12*100)}%"></u></div></div>
+    <div class="buy"><div class="qty"><button data-a="m">−</button><span>${s.q}</span><button data-a="p">+</button></div>
+    ${s.t?`<a class="wa" target="_blank" rel="noopener" href="https://wa.me/${WA}?text=${encodeURIComponent(m)}">Comprar por WhatsApp</a>`:'<a class="wa off">Sin stock</a>'}</div>
+  </div>`;
+}
+function render(){
+  const idx=PRODUCTOS.map((p,i)=>i).filter(i=>{const p=PRODUCTOS[i];return (cat==="Todo"||p.cat===cat)&&(p.n+p.desc+p.cat).toLowerCase().includes(term)});
+  $("grid").innerHTML=idx.length?idx.map(i=>`<article class="card" data-i="${i}">${card(i)}</article>`).join(""):'<div class="empty">No encontramos prendas 🔎</div>';
+}
+$("grid").addEventListener("click",e=>{
+  const b=e.target.closest("[data-a]");if(!b)return;
+  const el=b.closest(".card"),i=+el.dataset.i,p=PRODUCTOS[i],s=S[i],a=b.dataset.a;
+  if(a==="c")s.c=+b.dataset.v;
+  if(a==="t"){s.t=b.dataset.v;s.q=1}
+  if(a==="m")s.q=Math.max(1,s.q-1);
+  if(a==="p")s.q=Math.min(p.tallas[s.t]||1,s.q+1);
+  el.innerHTML=card(i);
+});
+$("q").addEventListener("input",e=>{term=e.target.value.trim().toLowerCase();render()});
+const cats=["Todo",...new Set(PRODUCTOS.map(p=>p.cat))];
+$("chips").innerHTML=cats.map(c=>`<button class="chip ${c===cat?'on':''}">${c}</button>`).join("");
+$("chips").addEventListener("click",e=>{
+  const b=e.target.closest(".chip");if(!b)return;cat=b.textContent;
+  $("chips").querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x===b));render();
+});
+$("nombre").textContent=NOMBRE;document.title=NOMBRE;
+$("fab").href="https://wa.me/"+WA+"?text="+encodeURIComponent("¡Hola! Vi el catálogo y tengo una consulta.");
+const T=PRODUCTOS.reduce((a,p)=>a+Object.values(p.tallas).reduce((x,y)=>x+y,0),0);let n=0;
+const t=setInterval(()=>{n+=Math.ceil(T/30);if(n>=T){n=T;clearInterval(t)}$("total").textContent=n},35);
+render();
+</script>
+</body>
+</html>
