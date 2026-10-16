@@ -78,7 +78,7 @@ dialog input[type=checkbox]{width:auto;margin-right:8px}
 </style>
 </head>
 <body>
-<div id="boot" style="padding:70px 16px;text-align:center;color:#5d6573;font:16px system-ui,sans-serif">Cargando catálogo… (v3)</div>
+<div id="boot" style="padding:70px 16px;text-align:center;color:#5d6573;font:16px system-ui,sans-serif">Cargando catálogo… (v4)</div>
 <div class="adm" id="adm" hidden><b>Modo administrador</b>
   <button class="ab" id="b_mode">✏️ Editar catálogo</button><button class="ab" id="b_new" hidden>➕ Producto nuevo</button>
   <button class="ab" id="b_cfg" hidden>⚙️ Mi tienda</button><button class="ab ghost" id="b_out">Salir</button></div>
@@ -97,13 +97,13 @@ dialog input[type=checkbox]{width:auto;margin-right:8px}
 <script>
 function showErr(t){var b=document.getElementById("boot");if(b)b.remove();var m=document.getElementById("msg");if(!m)return;document.getElementById("app").hidden=true;document.getElementById("mt").textContent="Algo salió mal";document.getElementById("mp").textContent=t;m.hidden=false}
 window.addEventListener("error",function(e){if(e.target&&e.target.src){showErr("No se pudo descargar: "+e.target.src);return}showErr((e.message||"Error")+" "+String(e.filename||"").split("/").pop()+":"+(e.lineno||""))});
-setTimeout(function(){var b=document.getElementById("boot");if(b){showErr("La página no pudo iniciar. Puede que tu red esté bloqueando los servicios de Google/Firebase (v3).")}},12000);
+setTimeout(function(){var b=document.getElementById("boot");if(b){showErr("La página no pudo iniciar. Se detuvo en: "+(window.__step||"inicio")+" (v4)")}},15000);
 window.addEventListener("unhandledrejection",function(e){var r=e.reason;showErr(String((r&&(r.code||r.message))||r))});
 </script>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut,sendPasswordResetEmail} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {getFirestore,doc,getDoc,getDocs,addDoc,setDoc,updateDoc,deleteDoc,collection,query,where} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {initializeFirestore,doc,getDoc,getDocs,addDoc,setDoc,updateDoc,deleteDoc,collection,query,where} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 // ====== PEGA AQUÍ LOS DATOS DE TU PROYECTO FIREBASE (Configuración del proyecto > Tus apps > Web) ======
 const firebaseConfig = {
   apiKey: "AIzaSyBTpdcqisXipgG9S9dyx3hovBBli4mfsmQ",
@@ -112,7 +112,8 @@ const firebaseConfig = {
   appId: "1:100908240312:web:51f477109c7ada89e8534d"
 };
 // =====================================================================================================
-const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
+const app=initializeApp(firebaseConfig), auth=getAuth(app), db=initializeFirestore(app,{experimentalForceLongPolling:true});
+const step=t=>{window.__step=t;const b=document.getElementById("boot");if(b)b.textContent="Cargando catálogo… "+t+" (v4)"};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const light=h=>"#"+[1,3,5].map(i=>{const v=parseInt(h.substr(i,2),16);return Math.round(v+(255-v)*.45).toString(16).padStart(2,"0")}).join("");
@@ -158,6 +159,7 @@ $("grid").addEventListener("click",e=>{
 });
 
 async function loadProducts(){
+  step("3/3 productos");
   const col=collection(db,"stores",store.id,"products");
   const r=await getDocs(OWNER?col:query(col,where("active","==",true)));
   P=r.docs.map(d=>{const x=d.data();return {...x,id:d.id,colors:(x.colors||[]).map(c=>[c.n,c.c1,c.c2]),sizes:x.sizes||{},created:x.created||0}}).sort((a,b)=>a.created-b.created);
@@ -167,11 +169,13 @@ async function loadProducts(){
   const t=setInterval(()=>{n+=Math.ceil(T/30)||1;if(n>=T){n=T;clearInterval(t)}$("total").textContent=n},35);
 }
 async function boot(){
+  step("1/3 sesión");
   const user=await new Promise(r=>{const u=onAuthStateChanged(auth,x=>{u();r(x)})});
   let slug=new URLSearchParams(location.search).get("tienda");
   if(!slug&&user){const q=await getDocs(query(collection(db,"stores"),where("owner","==",user.uid)));
     if(q.docs[0]){slug=q.docs[0].id;history.replaceState(null,"","?tienda="+slug)}}
   if(!slug)return msg("Falta el enlace de la tienda","Abre el enlace que te dio tu proveedor o entra como administrador.");
+  step("2/3 tienda");
   let snap;try{snap=await getDoc(doc(db,"stores",slug))}catch(e){return msg("No se pudo cargar","Código del error: "+(e.code||e.message))}
   if(!snap.exists())return msg("Tienda no encontrada","No existe una tienda llamada «"+slug+"» en Firestore. Revisa el ID del documento en la colección stores.");
   store={id:snap.id,...snap.data()};OWNER=!!user&&store.owner===user.uid;
@@ -207,7 +211,4 @@ function form(){const w=ed.w;$("dbody").innerHTML=`
  <div class="fl">Tallas y cuántas hay disponibles${w.sz.map(([k,v],i)=>`<div class="r"><input data-k="sn" data-i="${i}" value="${esc(k)}" placeholder="Talla"><input type="number" min="0" data-k="sq" data-i="${i}" value="${v}"><button class="mini" data-d="rs" data-i="${i}">✕</button></div>`).join("")}<button class="mini" data-d="as">+ Talla</button><button class="mini" data-d="pre">S, M, L, XL</button></div>
  <label><input type="checkbox" id="f_active" ${w.active?"checked":""}>Visible en el catálogo</label>`}
 $("dbody").addEventListener("input",e=>{
-  const t=e.target,i=+t.dataset.i,k=t.dataset.k;if(!ed)return;
-  if(ed.mode==="store"){if(t.dataset.s)ed.c[t.dataset.s]=t.value;return}
-  if(ed.mode!=="prod")return;const w=ed.w;
-  if(t.id==="f_active")w.active=t.checked
+  
