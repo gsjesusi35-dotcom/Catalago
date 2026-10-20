@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thorgonza — Conecta, crea, imprime</title>
+<meta name="description" content="Thorgonza: insumos de sublimación, personalización a medida y papelería corporativa con despacho directo a tu espacio de trabajo. Barquisimeto, Venezuela.">
+<meta property="og:title" content="Thorgonza — Conecta, crea, imprime">
+<meta property="og:description" content="Insumos de sublimación, personalización a medida y papelería corporativa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"Thorgonza","description":"Insumos de sublimación, personalización a medida y papelería corporativa.","telephone":"+58 424-5287217","email":"hola@thorgonza.com","address":{"@type":"PostalAddress","addressLocality":"Barquisimeto","addressCountry":"VE"}}</script>
+<style>
+:root{--paper:#f3efe4;--ink:#101010;--spot:#ff4b1f;--mut:#58554c;--wa:#1fa855;--display:'Anton',Impact,'Arial Narrow',sans-serif;--body:'Space Grotesk',system-ui,sans-serif;--mono:'Space Mono',ui-monospace,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;background:var(--paper) radial-gradient(rgba(16,16,16,.1) 1px,transparent 1.2px) 0 0/22px 22px;color:var(--ink);font:400 17px/1.55 var(--body);overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--spot);outline-offset:3px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 22px}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-transform:uppercase;margin:0;line-height:.92;letter-spacing:.005em}
+.mono{font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.08em}
+.tick{background:var(--ink);color:var(--paper);overflow:hidden;white-space:nowrap;border-bottom:2px solid var(--ink)}
+.trk{display:inline-flex;animation:mq 38s linear infinite}
+.trk span{font:700 13px var(--mono);letter-spacing:.14em;padding:9px 0}
+.trk b{color:var(--spot);padding:0 18px}
+@keyframes mq{to{transform:translateX(-50%)}}
+header{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:2px solid var(--ink)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:70px;gap:16px}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.logo img{height:36px;display:block}
+nav{display:flex;align-items:center;gap:26px}
+nav a{font:700 13px var(--mono);text-transform:uppercase;letter-spacing:.06em;text-decoration:none}
+nav a small{color:var(--spot);margin-right:6px}
+nav a:hover{text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:6px}
+.btn{display:inline-block;border:2px solid var(--ink);background:var(--spot);color:var(--ink);padding:14px 22px;font:700 14px var(--body);text-transform:uppercase;letter-spacing:.05em;text-decoration:none;box-shadow:5px 5px 0 var(--ink);transition:transform .12s,box-shadow .12s;cursor:pointer}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+.btn:active{transform:translate(5px,5px);box-shadow:0 0 0 var(--ink)}
+.btn.ink{background:var(--ink);color:var(--paper)}
+.btn.ghost{background:var(--paper)}
+.btn.wa{background:var(--wa);color:#fff}
+.btn.sm{padding:10px 16px;box-shadow:4px 4px 0 var(--ink)}
+.burger{display:none;border:2px solid var(--ink);background:var(--paper);font:700 14px var(--mono);padding:9px 12px;cursor:pointer}
+.hero{padding:44px 0 72px;position:relative}
+.reg{position:absolute;right:22px;top:26px;width:74px;height:74px;border:2px solid var(--ink);border-radius:50%;display:none}
+.reg::before,.reg::after{content:"";position:absolute;background:var(--ink)}
+.reg::before{left:50%;top:-12px;bottom:-12px;width:2px}.reg::after{top:50%;left:-12px;right:-12px;height:2px}
+.kicker{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:22px}
+.kicker span{border:2px solid var(--ink);padding:5px 12px;background:#fff}
+h1{font-size:clamp(76px,19vw,270px);line-height:.84;letter-spacing:-.005em}
+h1 .o{color:transparent;-webkit-text-stroke:3px var(--ink)}
+h1 mark{background:var(--spot);color:var(--ink);padding:0 .08em;display:inline-block;transform:rotate(-1.5deg)}
+.hrow{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;margin-top:44px;align-items:start}
+.lead{font-size:21px;max-width:50ch;margin:0 0 28px}
+.cta{display:flex;gap:16px;flex-wrap:wrap}
+.job{background:#fff;border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink)}
+.job .hd{display:flex;align-items:center;justify-content:space-between;background:var(--ink);color:var(--paper);padding:10px 14px}
+.cmyk{display:flex;gap:4px}.cmyk i{width:14px;height:14px;display:block;border:1px solid var(--paper)}
+.job ul{list-style:none;margin:0;padding:6px 16px 14px}
+.job li{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:2px dashed #cfc9b8;font-weight:500}
+.job li:last-child{border:0}
+.job li b{font:700 13px var(--mono);color:var(--spot)}
+section{padding:92px 0}
+.sh{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:44px}
+.sh h2{font-size:clamp(46px,8vw,104px)}
+.sh p{max-width:44ch;margin:0;color:var(--mut)}
+.sec{font:700 13px var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;display:block}
+.sec b{background:var(--ink);color:var(--paper);padding:3px 8px;margin-right:8px}
+.row{display:grid;grid-template-columns:70px 1.1fr 1.3fr 150px;gap:24px;align-items:center;padding:28px 18px;border-top:2px solid var(--ink);text-decoration:none;transition:background .15s,color .15s}
+.rows{border-bottom:2px solid var(--ink)}
+.row:hover{background:var(--ink);color:var(--paper)}
+.row .n{font:700 15px var(--mono);color:var(--spot)}
+.row h3{font-size:clamp(30px,4.2vw,54px)}
+.row p{margin:0;color:inherit;opacity:.8}
+.row .go{justify-self:end;font:700 13px var(--mono);text-transform:uppercase;border:2px solid currentColor;padding:8px 12px;white-space:nowrap}
+.cat{background:var(--spot);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+.cat .wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:center}
+.cat h2{font-size:clamp(48px,7vw,96px);margin-bottom:22px}
+.cat p{font-size:19px;max-width:42ch;margin:0 0 22px}
+.feats{list-style:none;padding:0;margin:0 0 30px;display:grid;gap:12px}
+.feats li{display:flex;gap:12px;font-weight:500;align-items:flex-start}
+.feats li::before{content:"✓";flex:none;width:26px;height:26px;background:var(--ink);color:var(--spot);display:grid;place-items:center;font-weight:700}
+.win{background:var(--paper);border:3px solid var(--ink);box-shadow:12px 12px 0 var(--ink)}
+.win .bar{display:flex;gap:8px;align-items:center;padding:10px 14px;border-bottom:3px solid var(--ink);background:#fff}
+.win .bar i{width:12px;height:12px;border:2px solid var(--ink);display:block}
+.win .bar span{margin-left:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:400 12px var(--mono)}
+.win iframe{display:block;width:100%;height:660px;border:0;background:#eceff3}
+.vals{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:26px}
+.val{background:#fff;border:2px solid var(--ink);box-shadow:7px 7px 0 var(--ink);padding:24px 22px 26px;transition:transform .15s,box-shadow .15s}
+.val:hover{transform:translate(-3px,-3px);box-shadow:10px 10px 0 var(--spot)}
+.val .big{font:400 78px/1 var(--display);color:transparent;-webkit-text-stroke:2px var(--ink);display:block;margin-bottom:10px}
+.val h3{font-size:30px;margin-bottom:8px}.val p{margin:0;color:var(--mut)}
+.big-cta{background:var(--ink);color:var(--paper);text-align:center;padding:96px 0;border-top:2px solid var(--ink)}
+.big-cta h2{font-size:clamp(46px,9vw,128px);margin:0 auto 20px;max-width:15ch}
+.big-cta h2 em{font-style:normal;color:var(--spot)}
+.big-cta p{font-size:20px;color:#cfc9b8;margin:0 0 30px}
+.contact .wrap{display:grid;grid-template-columns:.95fr 1.05fr;gap:56px}
+.contact h2{font-size:clamp(46px,7vw,92px);margin-bottom:26px}
+.info{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.info li{padding:18px 0;border-bottom:2px solid var(--ink);display:grid;gap:2px}
+.info a{font:700 22px var(--body);text-decoration:none}.info a:hover{color:var(--spot)}
+.info .v{font:700 22px var(--body)}
+form{background:#fff;border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink);padding:28px;display:grid;gap:18px}
+label{display:grid;gap:7px}
+input,select,textarea{font:400 17px var(--body);padding:13px 14px;border:2px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:0;width:100%}
+input:focus,select:focus,textarea:focus{outline:none;box-shadow:5px 5px 0 var(--spot)}
+footer{background:var(--ink);color:#cfc9b8;padding:64px 0 24px;overflow:hidden}
+footer .cols{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:34px}
+footer img{height:38px;display:block;margin-bottom:12px}
+footer h4{font:700 13px var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--spot);margin:0 0 14px}
+footer ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+footer a{text-decoration:none}footer a:hover{color:#fff}
+.word{font:400 clamp(64px,17vw,250px)/.8 var(--display);text-transform:uppercase;color:transparent;-webkit-text-stroke:2px #3a3a3a;margin:44px 0 18px;white-space:nowrap;letter-spacing:.01em}
+.copy{border-top:2px solid #2a2a2a;padding-top:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:400 12px var(--mono);text-transform:uppercase}
+.fab{position:fixed;right:16px;bottom:16px;z-index:60;background:var(--spot);color:var(--ink);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);padding:12px 16px;font:700 13px var(--mono);text-transform:uppercase;text-decoration:none;transform:rotate(-2deg)}
+.fab:hover{transform:rotate(0) translate(-2px,-2px)}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s}.rv.in{opacity:1;transform:none}
+@media (min-width:1100px){.reg{display:block}}
+@media (max-width:900px){
+ section{padding:64px 0}.hero{padding:30px 0 56px}
+ .hrow,.cat .wrap,.contact .wrap{grid-template-columns:1fr}
+ .row{grid-template-columns:44px 1fr;gap:10px 14px}.row p{grid-column:2}.row .go{grid-column:2;justify-self:start}
+ h1 .o{-webkit-text-stroke:2px var(--ink)}
+ footer .cols{grid-template-columns:1fr 1fr}
+ .burger{display:block}
+ nav{display:none;position:absolute;left:0;right:0;top:70px;background:var(--paper);border-bottom:2px solid var(--ink);flex-direction:column;align-items:flex-start;padding:22px;gap:20px}
+ nav.open{display:flex}
+ header .wrap>.btn{display:none}
+ .win iframe{height:560px}.win{box-shadow:8px 8px 0 var(--ink)}
+}
+@media (max-width:560px){footer .cols{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="tick" aria-hidden="true"><div class="trk" id="trk"></div></div>
+
+<header><div class="wrap">
+  <a class="logo" href="#inicio" aria-label="Thorgonza, inicio"><img src="https://miguelbr4806y.github.io/Thorgonza/img/PNG/LOGO%20COLORIDO/ISOTIPO%20-%20THORGONZA.png" alt="Isotipo de Thorgonza"><img src="https://miguelbr4806y.github.io/Thorgonza/img/PNG/LOGO%20COLORIDO/LOGOTIPO%20-%20THORGONZA.png" alt="Thorgonza"></a>
+  <nav id="menu" aria-label="Principal"><a href="#servicios"><small>01</small>Servicios</a><a href="#catalogo"><small>02</small>Catálogo</a><a href="#valores"><small>03</small>Por qué nosotros</a><a href="#contacto"><small>04</small>Contacto</a></nav>
+  <a class="btn sm" data-wa="¡Hola Thorgonza! Quiero cotizar un proyecto." target="_blank" rel="noopener" href="#contacto">Cotiza tu proyecto</a>
+  <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false">MENÚ</button>
+</div></header>
+
+<main id="inicio">
+<section class="hero"><div class="wrap">
+  <div class="reg" aria-hidden="true"></div>
+  <div class="kicker mono"><span>Insumos</span><span>Personalización</span><span>Papelería</span></div>
+  <h1>Conecta,<br><span class="o">crea,</span><br><mark>imprime.</mark></h1>
+  <div class="hrow">
+    <div>
+      <p class="lead">El aliado que resuelve todo bajo una sola marca: insumos de sublimación, personalización a medida y papelería corporativa con despacho directo a tu espacio de trabajo.</p>
+      <div class="cta"><a class="btn" href="#servicios">Ver servicios</a><a class="btn ghost" href="#catalogo">Catálogo digital</a></div>
+    </div>
+    <div class="job" aria-label="Lo que ofrecemos">
+      <div class="hd"><span class="mono">Orden de trabajo · Thorgonza</span><span class="cmyk"><i style="background:#00aeef"></i><i style="background:#ec008c"></i><i style="background:#ffd400"></i><i style="background:#101010"></i></span></div>
+      <ul>
+        <li>Insumos de sublimación <b>✓</b></li>
+        <li>Personalización a medida <b>✓</b></li>
+        <li>Papelería corporativa <b>✓</b></li>
+        <li>Despacho directo a tu espacio de trabajo <b>✓</b></li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section id="servicios" style="padding-top:20px"><div class="wrap">
+  <div class="sh rv"><div><span class="sec"><b>01</b>Lo que hacemos</span><h2>Distintos servicios,<br>una sola marca</h2></div><p>Del insumo al producto terminado, todo en un solo lugar y con atención directa.</p></div>
+  <div class="rows rv">
+    <a class="row" href="#catalogo"><span class="n">/01</span><h3>Insumos de sublimación</h3><p>Todo lo que necesitas para sublimar, con despacho directo a tu taller o espacio de trabajo.</p><span class="go">Ver catálogo →</span></a>
+    <a class="row" data-wa="¡Hola Thorgonza! Quiero personalizar un producto." target="_blank" rel="noopener" href="#contacto"><span class="n">/02</span><h3>Personalización a medida</h3><p>Productos personalizados con tu diseño, pensados para tu marca, tu evento o tu regalo.</p><span class="go">Cotizar →</span></a>
+    <a class="row" href="#catalogo"><span class="n">/03</span><h3>Papelería corporativa</h3><p>Tarjetas, hojas, carpetas y papelería institucional con acabados profesionales que representan tu negocio con consistencia.</p><span class="go">Ver catálogo →</span></a>
+    <a class="row" data-wa="¡Hola Thorgonza! Me interesa el manejo de redes sociales." target="_blank" rel="noopener" href="#contacto"><span class="n">/04</span><h3>Manejo de redes sociales</h3><p>Contenido y diseño para que tu marca se vea profesional y constante en redes.</p><span class="go">Consultar →</span></a>
+  </div>
+</div></section>
+
+<section class="cat" id="catalogo"><div class="wrap">
+  <div class="rv">
+    <span class="sec"><b>02</b>Catálogo digital</span>
+    <h2>Explora,<br>elige y pide</h2>
+    <p>Mira los productos con sus fotos, opciones y cuántos hay disponibles. Arma tu pedido y nos llega directo por WhatsApp, listo para confirmar.</p>
+    <ul class="feats">
+      <li>Fotos, colores y cantidad disponible de cada producto</li>
+      <li>Precios en dólares y en bolívares, con la tasa del BCV del día</li>
+      <li>Carrito: arma tu pedido y envíalo por WhatsApp</li>
+    </ul>
+    <a class="btn ink" id="openCat" target="_blank" rel="noopener" href="#">Abrir catálogo completo</a>
+  </div>
+  <div class="win rv"><div class="bar"><i></i><i></i><i></i><span id="catUrl">Catálogo digital Thorgonza</span></div><iframe id="catFrame" title="Catálogo digital de Thorgonza" loading="lazy"></iframe></div>
+</div></section>
+
+<section id="valores"><div class="wrap">
+  <div class="sh rv"><div><span class="sec"><b>03</b>Por qué Thorgonza</span><h2>Despacho directo<br>a tu espacio de trabajo</h2></div><p>Ágiles, confiables y cercanos. Cumplimos lo que prometemos, cuando lo prometemos.</p></div>
+  <div class="vals">
+    <div class="val rv"><span class="big">01</span><h3>Puntualidad</h3><p>Tiempos de entrega claros y cumplidos.</p></div>
+    <div class="val rv"><span class="big">02</span><h3>Confianza</h3><p>Calidad consistente en cada pedido.</p></div>
+    <div class="val rv"><span class="big">03</span><h3>Cercanía</h3><p>Atención directa, sin respuestas automáticas.</p></div>
+    <div class="val rv"><span class="big">04</span><h3>Innovación</h3><p>Nuevas técnicas y materiales cada temporada.</p></div>
+    <div class="val rv"><span class="big">05</span><h3>Versatilidad</h3><p>Del insumo al producto terminado, todo aquí.</p></div>
+  </div>
+</div></section>
+
+<section class="big-cta"><div class="wrap rv">
+  <h2>¿Listo para crear algo <em>increíble?</em></h2>
+  <p>Cuéntanos qué necesitas y te enviamos una propuesta hoy mismo.</p>
+  <a class="btn" data-wa="¡Hola Thorgonza! Quiero una propuesta para mi proyecto." target="_blank" rel="noopener" href="#contacto">Escríbenos por WhatsApp</a>
+</div></section>
+
+<section class="contact" id="contacto"><div class="wrap">
+  <div class="rv">
+    <span class="sec"><b>04</b>Contacto</span>
+    <h2>Cotiza<br>tu proyecto</h2>
+    <ul class="info">
+      <li><span class="mono">Correo</span><a href="mailto:hola@thorgonza.com">hola@thorgonza.com</a></li>
+      <li><span class="mono">Teléfono y WhatsApp</span><a href="tel:+584245287217">+58 424-5287217</a></li>
+      <li><span class="mono">Ubicación</span><span class="v">Barquisimeto, Venezuela</span></li>
+    </ul>
+  </div>
+  <form id="form" class="rv">
+    <label><span class="mono">Tu nombre</span><input name="n" required autocomplete="name" placeholder="Ej: María Pérez"></label>
+    <label><span class="mono">¿Qué necesitas?</span><select name="s"><option>Insumos de sublimación</option><option>Personalización a medida</option><option>Papelería corporativa</option><option>Manejo de redes sociales</option><option>Otro</option></select></label>
+    <label><span class="mono">Cuéntanos más</span><textarea name="m" rows="4" placeholder="Cantidad, fecha de entrega, ideas…"></textarea></label>
+    <button class="btn wa" type="submit">Enviar por WhatsApp</button>
+  </form>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><img src="https://miguelbr4806y.github.io/Thorgonza/img/PNG/POSITIVO%20Y%20NEGATIVO/LOGOTIPO%20BLANCO%20-%20THORGONZA.png" alt="Thorgonza"><p>conecta, crea, imprime</p></div>
+    <div><h4>Contacto</h4><ul><li><a href="mailto:hola@thorgonza.com">hola@thorgonza.com</a></li><li><a href="tel:+584245287217">+58 424-5287217</a></li><li>Barquisimeto, Venezuela</li></ul></div>
+    <div><h4>Navegación</h4><ul><li><a href="#servicios">Servicios</a></li><li><a href="#catalogo">Catálogo</a></li><li><a href="#valores">Por qué nosotros</a></li><li><a data-wa="¡Hola Thorgonza!" target="_blank" rel="noopener" href="#contacto">Contacto</a></li></ul></div>
+    <div id="socwrap"><h4>Síguenos</h4><ul id="social"></ul></div>
+  </div>
+  <div class="word" aria-hidden="true">Thorgonza</div>
+  <div class="copy"><span>© 2026 Thorgonza. Todos los derechos reservados.</span><span>Minimalista, pero con chispa.</span></div>
+</div></footer>
+<a class="fab" data-wa="¡Hola Thorgonza! Quisiera más información." target="_blank" rel="noopener" href="#contacto" aria-label="Escribir por WhatsApp">WhatsApp ↗</a>
+
+<script>
+/* ===== EDITA AQUÍ ===== */
+const WA = "584245287217";
+const CATALOGO = "https://gsjesusi35-dotcom.github.io/Catalago/?tienda=mi-tienda";
+const INSTAGRAM = "";
+const TIKTOK = "";
+/* ======================= */
+const wa=t=>"https://wa.me/"+WA+"?text="+encodeURIComponent(t);
+document.querySelectorAll("[data-wa]").forEach(a=>a.href=wa(a.dataset.wa));
+document.getElementById("openCat").href=CATALOGO;
+document.getElementById("catUrl").textContent=CATALOGO.replace("https://","");
+const one="<span>INSUMOS <b>✦</b> PERSONALIZACIÓN <b>✦</b> PAPELERÍA <b>✦</b> CONECTA, CREA, IMPRIME <b>✦</b> </span>";
+document.getElementById("trk").innerHTML=one.repeat(8);
+const fr=document.getElementById("catFrame");
+if("IntersectionObserver" in window){
+  new IntersectionObserver((e,o)=>{if(e[0].isIntersecting){fr.src=CATALOGO;o.disconnect()}},{rootMargin:"400px"}).observe(fr);
+}else{fr.src=CATALOGO}
+const soc=document.getElementById("social");
+[["Instagram",INSTAGRAM],["TikTok",TIKTOK]].forEach(([n,u])=>{if(u)soc.insertAdjacentHTML("beforeend",'<li><a href="'+u+'" target="_blank" rel="noopener">'+n+'</a></li>')});
+if(!soc.children.length)document.getElementById("socwrap").style.display="none";
+document.getElementById("form").addEventListener("submit",e=>{
+  e.preventDefault();const f=new FormData(e.target);
+  window.open(wa("¡Hola Thorgonza! Soy "+f.get("n")+".\nMe interesa: "+f.get("s")+".\n"+(f.get("m")||"")),"_blank");
+});
+const mb=document.getElementById("burger"),mn=document.getElementById("menu");
+mb.addEventListener("click",()=>{const o=mn.classList.toggle("open");mb.setAttribute("aria-expanded",o)});
+mn.addEventListener("click",e=>{if(e.target.closest("a")){mn.classList.remove("open");mb.setAttribute("aria-expanded","false")}});
+const rv=document.querySelectorAll(".rv");
+if("IntersectionObserver" in window){
+  const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");io.unobserve(x.target)}}),{threshold:.1});
+  rv.forEach((el,i)=>{el.style.transitionDelay=(i%4)*70+"ms";io.observe(el)});
+}else{rv.forEach(el=>el.classList.add("in"))}
+</script>
+</body>
+</html>
